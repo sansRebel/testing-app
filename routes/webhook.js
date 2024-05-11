@@ -8,34 +8,34 @@ router.post('/webhook', async (req, res) => {
     switch(action) {
         case 'bookFlight':
             const { from, to, departureDate } = req.body.queryResult.parameters;
-            try {
-                const result = await bookFlight(from, to, departureDate);
-                res.json({ fulfillmentText: `Flight from ${from} to ${to} on ${departureDate} booked successfully. Details: ${JSON.stringify(result)}` });
-            } catch (error) {
-                res.status(500).json({ fulfillmentText: `Failed to book flight: ${error.message}` });
+            const bookingResult = await bookFlight(from, to, departureDate);
+            if (bookingResult.status === 'success') {
+                res.json({ fulfillmentText: bookingResult.message });
+            } else {
+                res.status(500).json({ fulfillmentText: bookingResult.message });
             }
             break;
         case 'cancelFlight':
             const { flightNumber } = req.body.queryResult.parameters;
-            try {
-                const result = await cancelFlight(flightNumber);
-                res.json({ fulfillmentText: `Flight number ${flightNumber} cancelled successfully.` });
-            } catch (error) {
-                res.status(500).json({ fulfillmentText: `Failed to cancel flight: ${error.message}` });
+            const cancellationResult = await cancelFlight(flightNumber);
+            if (cancellationResult.status === 'success') {
+                res.json({ fulfillmentText: cancellationResult.message });
+            } else if (cancellationResult.status === 'not found') {
+                res.status(404).json({ fulfillmentText: cancellationResult.message });
+            } else {
+                res.status(500).json({ fulfillmentText: cancellationResult.message });
             }
             break;
         case 'queryFlightStatus':
             const { flightNumber: queryFlightNumber } = req.body.queryResult.parameters;
-            try {
-                const flights = await searchFlights({ flightNumber: queryFlightNumber });
-                if (flights.length > 0) {
-                    const flightDetails = flights.map(flight => `${flight.airline} flight ${flight.flightNumber} from ${flight.departureAirport} to ${flight.arrivalAirport} departs at ${flight.departureTime} and arrives at ${flight.arrivalTime}`).join(", ");
-                    res.json({ fulfillmentText: `Here are the details of your flight(s): ${flightDetails}` });
-                } else {
-                    res.json({ fulfillmentText: "No flights found with that flight number." });
-                }
-            } catch (error) {
-                res.status(500).json({ fulfillmentText: `Failed to retrieve flight status: ${error.message}` });
+            const flightsResult = await searchFlights({ flightNumber: queryFlightNumber });
+            if (flightsResult.status === 'success' && flightsResult.flights.length > 0) {
+                const flightDetails = flightsResult.flights.map(flight => `${flight.airline} flight ${flight.flightNumber} from ${flight.from} to ${flight.to} departs at ${flight.departureTime} and arrives at ${flight.arrivalTime}`).join(", ");
+                res.json({ fulfillmentText: `Here are the details of your flight(s): ${flightDetails}` });
+            } else if (flightsResult.flights.length === 0) {
+                res.json({ fulfillmentText: "No flights found with that flight number." });
+            } else {
+                res.status(500).json({ fulfillmentText: `Failed to retrieve flight status: ${flightsResult.message}` });
             }
             break;
         default:
