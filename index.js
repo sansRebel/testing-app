@@ -30,7 +30,7 @@ app.use('/api/flights', flightRoutes);
 
 
 const webhookRoutes = require('./routes/webhook');  // Adjust the path as necessary
-app.use('/api/webhook', webhookRoutes);
+app.use('/webhook', webhookRoutes);
 
 const PORT = process.env.PORT || 3001;
 
