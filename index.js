@@ -17,7 +17,9 @@ const sessionClient = new dialogflow.SessionsClient({
   credentials: googleCredentials
 });
 
-app.use(cors());
+app.use(cors({
+    origin: 'https://testing-app-client-1tn2vo8i4-khaleds-projects-3ddab673.vercel.app/' 
+}));
 
 // Routes setup
 const flightRoutes = require('./routes/flights'); 
