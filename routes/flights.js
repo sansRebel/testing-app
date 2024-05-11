@@ -69,4 +69,5 @@ async function searchFlights(from, to, departureDate, flightNumber) {
 }
 
 // Export functions to be used in webhook.js
+module.exports = router;
 module.exports = { bookFlight, cancelFlight, searchFlights };
