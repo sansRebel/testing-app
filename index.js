@@ -25,7 +25,7 @@ app.use(cors({
 }));
 
 // Routes setup
-const flightRoutes = require('./routes/flights'); 
+const { router: flightRoutes } = require('./routes/flights');
 app.use('/api/flights', flightRoutes);
 
 const PORT = process.env.PORT || 3001;
