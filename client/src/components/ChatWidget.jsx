@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const apiBaseUrl = 'http://localhost:3001';
+const apiBaseUrl = 'https://testing-app-server.vercel.app/';
 console.log(apiBaseUrl);
 
 function ChatWidget() {
