@@ -18,9 +18,9 @@ const sessionClient = new dialogflow.SessionsClient({
 });
 
 app.use(cors({
-    origin: 'https://testing-app-client-1tn2vo8i4-khaleds-projects-3ddab673.vercel.app',
-    methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type',
+    origin: 'https://testing-app-client.vercel.app',  // This should match the client's URL exactly as seen in the browser
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true 
 }));
 
