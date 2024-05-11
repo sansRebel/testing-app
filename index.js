@@ -18,7 +18,7 @@ const sessionClient = new dialogflow.SessionsClient({
 });
 
 app.use(cors({
-    origin: 'https://testing-app-client-1tn2vo8i4-khaleds-projects-3ddab673.vercel.app/' 
+    origin: 'https://testing-app-client-1tn2vo8i4-khaleds-projects-3ddab673.vercel.app' 
 }));
 
 // Routes setup
