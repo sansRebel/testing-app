@@ -28,6 +28,9 @@ app.use(cors({
 const { router: flightRoutes } = require('./routes/flights');
 app.use('/api/flights', flightRoutes);
 
+const webhookRoutes = require('./routes/webhook');  // Adjust the path as necessary
+app.use('/webhook', webhookRoutes);
+
 const PORT = process.env.PORT || 3001;
 
 // MongoDB connection
