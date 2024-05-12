@@ -17,24 +17,24 @@ function calculateArrivalTime(departureTime) {
 const airlines = ["Air Malaysia", "Malaysia Sky", "Kuala Airways", "Penang Flight Co"];
 
 // Function to book a flight
-async function bookFlight(from, to, departureDateString) {
+async function bookFlight(from, to, departureDateArray) {
     try {
-        console.log("Received date string:", departureDateString);  // Log the received date string
-        const departureDate = new Date(departureDateString + "T09:00:00Z");
+        const departureDateString = departureDateArray[0]; // Assuming the date comes in as an array, we take the first element
+        console.log("Received date string:", departureDateString);  // Log the corrected date string
+        const departureDate = new Date(departureDateString);
 
-        // Validate the date
-        if (isNaN(departureDate)) {
+        if (isNaN(departureDate.valueOf())) {
             console.error("Invalid departure date:", departureDateString);
             return { status: 'error', message: 'Invalid departure date format' };
         }
 
         const arrivalDate = new Date(departureDate);
-        arrivalDate.setHours(arrivalDate.getHours() + 1, arrivalDate.getMinutes() + 15);  // Add 1 hour and 15 minutes
+        arrivalDate.setHours(arrivalDate.getHours() + 1, arrivalDate.getMinutes() + 15); // Adjust arrival time calculation
 
         const newFlight = new Flight({
             flightNumber: generateFlightNumber(),
-            from,
-            to,
+            from: from[0], // Similarly, ensure 'from' and 'to' are processed if they are arrays
+            to: to[0],
             departureTime: departureDate,
             arrivalTime: arrivalDate,
             airline: airlines[Math.floor(Math.random() * airlines.length)]
