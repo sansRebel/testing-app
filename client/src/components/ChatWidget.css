@@ -1,0 +1,99 @@
+/* Container for the entire chat interface, including title and widget */
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 350px;
+    z-index: 1000;
+}
+
+/* Styling for the title above the chat widget */
+.chat-title {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px; /* Space between title and chat widget */
+}
+
+/* General body styling */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #eceff1;
+}
+
+/* Specific styling for the chat widget */
+.chat-widget {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Ensures nothing spills out */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 450px; /* Fixed height */
+}
+
+/* Button styling within the widget */
+button {
+    background-color: #de2424;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+}
+
+button:hover {
+    background-color: #080000;
+}
+
+/* Styles for the message container and individual messages */
+.messages {
+    overflow-y: auto;
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.messages p {
+    background: #f1f1f1;
+    border-radius: 20px;
+    padding: 10px 15px;
+    margin: 5px;
+    word-wrap: break-word;
+    max-width: 90%;
+    align-self: flex-end;
+}
+
+/* Input field styling */
+input[type="text"] {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    box-sizing: border-box;
+    width: calc(100% - 40px);
+}
+
+input[type="text"]:focus {
+    border-color: #4CAF50;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .chat-container {
+        bottom: 5px;
+        width: 95%;
+    }
+
+    .chat-widget {
+        height: 90%;
+    }
+}
