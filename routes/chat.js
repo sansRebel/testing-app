@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Message = require('../models/Messages');
-const User = require('../models/User');
 const dialogflow = require('dialogflow');
 
 // Dialogflow session client setup
@@ -28,7 +27,7 @@ router.post('/message', async (req, res) => {
 
         // Create a message with the Dialogflow response
         const message = new Message({
-            body: dialogflowResult.fulfillmentText,  // Consider including user's original text if needed
+            body: dialogflowResult.fulfillmentText,  
             conversationId: req.body.userId
         });
 
@@ -40,7 +39,7 @@ router.post('/message', async (req, res) => {
     }
 });
 
-// Existing GET route...
+
 router.get('/messages/:userId', async (req, res) => {
     try {
         const messages = await Message.find({ conversationId: req.params.userId });

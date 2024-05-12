@@ -27,7 +27,7 @@ function ChatWidget() {
         if (isOpen) {
             fetchMessages();
         }
-    }, [isOpen]); // This useEffect will call `fetchMessages` when the `isOpen` state changes.
+    }, [isOpen]); 
 
     const sendMessage = async () => {
         try {

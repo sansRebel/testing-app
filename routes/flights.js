@@ -1,17 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Flight = require('../models/Flights'); // Adjust the path as necessary
+const Flight = require('../models/Flights'); 
 
 // Helper function to generate random flight number
 function generateFlightNumber() {
     return "MH" + Math.floor(100 + Math.random() * 900);
 }
 
-// Helper function to calculate arrival time based on departure
-function calculateArrivalTime(departureTime) {
-    const departure = new Date(departureTime);
-    return new Date(departure.setHours(departure.getHours() + 1, departure.getMinutes() + 15)); // Adds 1 hour and 15 minutes
-}
+
 
 // Airlines sample data
 const airlines = ["Air Malaysia", "Malaysia Sky", "Kuala Airways", "Penang Flight Co"];
