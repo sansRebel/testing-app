@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router();
 const { bookFlight, cancelFlight, searchFlights } = require('./flights');
 
-router.post('/webhook', async (req, res) => {
+router.post('/', async (req, res) => {
+    console.log("Webhook route hit", req.body);
     const action = req.body.queryResult.action;
     switch(action) {
         case 'bookFlight':

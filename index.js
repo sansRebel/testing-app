@@ -5,17 +5,19 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const dialogflow = require('dialogflow');
 const app = express();
+const { router: flightRoutes } = require('./routes/flights');
+const webhookRoutes = require('./routes/webhook');
 
 // Use body-parser for handling form and JSON data
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Decode Google credentials from environment variable
-const googleCredentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, 'base64').toString('utf8'));
+//const googleCredentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, 'base64').toString('utf8'));
 
-const sessionClient = new dialogflow.SessionsClient({
+/*const sessionClient = new dialogflow.SessionsClient({
   credentials: googleCredentials
-});
+});*/
 
 app.use(cors({
     origin: 'https://testing-app-client.vercel.app',  // This should match the client's URL exactly as seen in the browser
@@ -25,12 +27,12 @@ app.use(cors({
 }));
 
 // Routes setup
-const { router: flightRoutes } = require('./routes/flights');
+
 app.use('/api/flights', flightRoutes);
 
 
-const webhookRoutes = require('./routes/webhook'); // Make sure the path is correct
-app.use('/webhook', webhookRoutes);
+ // Make sure the path is correct
+
 
 const PORT = process.env.PORT || 3001;
 
@@ -41,6 +43,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Default route
 app.get('/', (req, res) => res.send('Hello World!'));
+
+app.use('/webhook', webhookRoutes);
 
 // API route for chat messages
 app.post('/api/chat/message', async (req, res) => {
@@ -69,6 +73,8 @@ app.post('/api/chat/message', async (req, res) => {
 app.get('/api/chat/messages', (req, res) => {
     res.json([{ _id: 1, body: "Welcome to our service! How can I assist you today?" }]);
 });
+
+
 
 // Server listening
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
