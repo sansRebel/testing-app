@@ -17,14 +17,26 @@ function calculateArrivalTime(departureTime) {
 const airlines = ["Air Malaysia", "Malaysia Sky", "Kuala Airways", "Penang Flight Co"];
 
 // Function to book a flight
-async function bookFlight(from, to, departureDate) {
+async function bookFlight(from, to, departureDateString) {
     try {
+        console.log("Received date string:", departureDateString);  // Log the received date string
+        const departureDate = new Date(departureDateString + "T09:00:00Z");
+
+        // Validate the date
+        if (isNaN(departureDate)) {
+            console.error("Invalid departure date:", departureDateString);
+            return { status: 'error', message: 'Invalid departure date format' };
+        }
+
+        const arrivalDate = new Date(departureDate);
+        arrivalDate.setHours(arrivalDate.getHours() + 1, arrivalDate.getMinutes() + 15);  // Add 1 hour and 15 minutes
+
         const newFlight = new Flight({
             flightNumber: generateFlightNumber(),
-            from: from,
-            to: to,
-            departureTime: new Date(departureDate + "T09:00:00Z"),
-            arrivalTime: calculateArrivalTime(departureDate + "T09:00:00Z"),
+            from,
+            to,
+            departureTime: departureDate,
+            arrivalTime: arrivalDate,
             airline: airlines[Math.floor(Math.random() * airlines.length)]
         });
 
@@ -35,6 +47,7 @@ async function bookFlight(from, to, departureDate) {
         return { status: 'error', message: 'Error booking flight', details: error.message };
     }
 }
+
 
 // Function to cancel a flight
 async function cancelFlight(flightNumber) {
