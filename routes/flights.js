@@ -52,7 +52,8 @@ async function bookFlight(from, to, departureDateArray) {
 
 
 // Function to cancel a flight
-async function cancelFlight(flightNumber) {
+async function cancelFlight(flightNumberArray) {
+    const flightNumber = flightNumberArray[0]; // Assuming the first element is the flight number
     try {
         const result = await Flight.deleteMany({ flightNumber: flightNumber });
         if (result.deletedCount === 0) {
