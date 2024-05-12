@@ -29,7 +29,7 @@ const { router: flightRoutes } = require('./routes/flights');
 app.use('/api/flights', flightRoutes);
 
 
-const webhookRoutes = require('./routes/webhook');  // Adjust the path as necessary
+const webhookRoutes = require('./routes/webhook'); // Make sure the path is correct
 app.use('/webhook', webhookRoutes);
 
 const PORT = process.env.PORT || 3001;
