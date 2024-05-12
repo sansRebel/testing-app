@@ -43,7 +43,11 @@ async function bookFlight(from, to, departureDateArray) {
     try {
         const savedFlight = await newFlight.save();
         console.log("Flight saved successfully:", savedFlight);  // Log the saved flight
-        return { status: 'success', message: "Flight booked successfully", flightDetails: savedFlight };
+        return {
+            status: 'success',
+            message: `Flight booked successfully! Flight Number: ${savedFlight.flightNumber}, From: ${savedFlight.from}, To: ${savedFlight.to}`
+        };
+        
     } catch (error) {
         console.error('Error booking flight:', error);
         return { status: 'error', message: 'Error booking flight', details: error.message };

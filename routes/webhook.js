@@ -29,14 +29,17 @@ router.post('/', async (req, res) => {
         case 'queryFlightStatus':
             const flightsResult = await searchFlights(req.body.queryResult.parameters);
             if (flightsResult.status === 'success' && flightsResult.flights.length > 0) {
-                const flightDetails = flightsResult.flights.map(flight => `${flight.airline} flight ${flight.flightNumber} from ${flight.departureAirport} to ${flight.arrivalAirport} departs at ${flight.departureTime} and arrives at ${flight.arrivalTime}`).join(", ");
-                res.json({ fulfillmentText: `Here are the details of your flight(s): ${flightDetails}` });
+                const flightDetails = flightsResult.flights.map(flight => {
+                    return `Flight Number: ${flight.flightNumber}, Airline: ${flight.airline}, From: ${flight.from}, To: ${flight.to}, Departure: ${flight.departureTime}, Arrival: ${flight.arrivalTime}`;
+                }).join("\n");
+                res.json({ fulfillmentText: `Here are the details of your flight(s): \n${flightDetails}` });
             } else if (flightsResult.flights.length === 0) {
                 res.json({ fulfillmentText: "No flights found with that flight number." });
             } else {
                 res.status(500).json({ fulfillmentText: `Failed to retrieve flight status: ${flightsResult.message}` });
             }
             break;
+            
         default:
             res.status(404).send('Action not found');
     }
