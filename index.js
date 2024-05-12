@@ -78,3 +78,4 @@ app.get('/api/chat/messages', (req, res) => {
 
 // Server listening
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.timeout = 5000;
