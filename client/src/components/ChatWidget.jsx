@@ -10,14 +10,13 @@ function ChatWidget() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
 
-
-
     const toggleChat = () => setIsOpen(!isOpen);
 
     const fetchMessages = async () => {
         try {
             const response = await axios.get(`${apiBaseUrl}/api/chat/messages`);
-            setMessages(response.data);
+            // Assume each message has an 'author' field that says 'user' or 'bot'
+            setMessages(response.data.map(msg => ({ ...msg, align: msg.author === 'user' ? 'right' : 'left' })));
         } catch (error) {
             console.error('Error fetching messages:', error);
         }
@@ -27,12 +26,13 @@ function ChatWidget() {
         if (isOpen) {
             fetchMessages();
         }
-    }, [isOpen]); // This useEffect will call `fetchMessages` when the `isOpen` state changes.
+    }, [isOpen]);
 
     const sendMessage = async () => {
         try {
-            const response = await axios.post(`${apiBaseUrl}/api/chat/message`, { message: input });
-            setMessages([...messages, response.data]);
+            const message = { message: input, author: 'user' }; // Assuming 'user' identifies messages from the user
+            const response = await axios.post(`${apiBaseUrl}/api/chat/message`, message);
+            setMessages([...messages, { ...response.data, align: 'right' }]);
             setInput('');
         } catch (error) {
             console.error('Error sending message:', error);
@@ -45,8 +45,8 @@ function ChatWidget() {
             {isOpen && (
                 <div>
                     <div className="messages">
-                        {messages.map(msg => (
-                            <p key={msg._id}>{msg.body}</p>
+                        {messages.map((msg, index) => (
+                            <p key={index} className={msg.align === 'right' ? 'message-user' : 'message-bot'}>{msg.body}</p>
                         ))}
                     </div>
                     <input
@@ -61,5 +61,6 @@ function ChatWidget() {
         </div>
     );
 }
+
 
 export default ChatWidget;

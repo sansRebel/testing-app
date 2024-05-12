@@ -24,6 +24,7 @@ body {
     min-height: 100vh;
     margin: 0;
     background-color: #eceff1;
+    font-family: 'Arial', sans-serif;
 }
 
 /* Specific styling for the chat widget */
@@ -32,7 +33,6 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    font-family: 'Arial', sans-serif;
     overflow: hidden; /* Ensures nothing spills out */
     display: flex;
     flex-direction: column;
@@ -49,17 +49,18 @@ button {
     border-radius: 5px;
     cursor: pointer;
     outline: none;
+    flex-shrink: 0; /* Prevents the button from shrinking */
 }
 
 button:hover {
     background-color: #080000;
 }
 
-/* Styles for the message container and individual messages */
+/* Styles for the message container */
 .messages {
     overflow-y: auto;
-    padding: 10px;
     flex-grow: 1;
+    padding: 10px;
 }
 
 .messages p {
@@ -74,12 +75,19 @@ button:hover {
 
 /* Input field styling */
 input[type="text"] {
+    flex-grow: 1; /* Allows the input to grow and fill the space */
     padding: 10px;
-    margin: 10px;
+    margin-right: 10px; /* Ensure space between input and button */
     border: 1px solid #ddd;
     border-radius: 20px;
     box-sizing: border-box;
-    width: calc(100% - 40px);
+}
+
+/* Adjust layout to ensure buttons are visible */
+.chat-widget > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 input[type="text"]:focus {
