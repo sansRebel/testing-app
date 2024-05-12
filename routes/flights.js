@@ -18,30 +18,32 @@ const airlines = ["Air Malaysia", "Malaysia Sky", "Kuala Airways", "Penang Fligh
 
 // Function to book a flight
 async function bookFlight(from, to, departureDateArray) {
+    const departureDateString = departureDateArray[0];  // Assuming the date comes in as an array
+    const departureDate = new Date(departureDateString);
+
+    if (isNaN(departureDate.valueOf())) {
+        console.error("Invalid departure date:", departureDateString);
+        return { status: 'error', message: 'Invalid departure date format' };
+    }
+
+    const arrivalDate = new Date(departureDate);
+    arrivalDate.setHours(arrivalDate.getHours() + 1, arrivalDate.getMinutes() + 15);
+
+    const newFlight = new Flight({
+        flightNumber: generateFlightNumber(),
+        from: from[0],
+        to: to[0],
+        departureTime: departureDate,
+        arrivalTime: arrivalDate,
+        airline: airlines[Math.floor(Math.random() * airlines.length)]
+    });
+
+    console.log("Attempting to save flight:", newFlight);  // Log the flight object before saving
+
     try {
-        const departureDateString = departureDateArray[0]; // Assuming the date comes in as an array, we take the first element
-        console.log("Received date string:", departureDateString);  // Log the corrected date string
-        const departureDate = new Date(departureDateString);
-
-        if (isNaN(departureDate.valueOf())) {
-            console.error("Invalid departure date:", departureDateString);
-            return { status: 'error', message: 'Invalid departure date format' };
-        }
-
-        const arrivalDate = new Date(departureDate);
-        arrivalDate.setHours(arrivalDate.getHours() + 1, arrivalDate.getMinutes() + 15); // Adjust arrival time calculation
-
-        const newFlight = new Flight({
-            flightNumber: generateFlightNumber(),
-            from: from[0], // Similarly, ensure 'from' and 'to' are processed if they are arrays
-            to: to[0],
-            departureTime: departureDate,
-            arrivalTime: arrivalDate,
-            airline: airlines[Math.floor(Math.random() * airlines.length)]
-        });
-
-        await newFlight.save();
-        return { status: 'success', message: "Flight booked successfully", flightDetails: newFlight };
+        const savedFlight = await newFlight.save();
+        console.log("Flight saved successfully:", savedFlight);  // Log the saved flight
+        return { status: 'success', message: "Flight booked successfully", flightDetails: savedFlight };
     } catch (error) {
         console.error('Error booking flight:', error);
         return { status: 'error', message: 'Error booking flight', details: error.message };
