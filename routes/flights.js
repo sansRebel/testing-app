@@ -21,8 +21,8 @@ async function bookFlight(from, to, departureDate) {
     try {
         const newFlight = new Flight({
             flightNumber: generateFlightNumber(),
-            from,
-            to,
+            from: from,
+            to: to,
             departureTime: new Date(departureDate + "T09:00:00Z"),
             arrivalTime: calculateArrivalTime(departureDate + "T09:00:00Z"),
             airline: airlines[Math.floor(Math.random() * airlines.length)]
@@ -52,13 +52,7 @@ async function cancelFlight(flightNumber) {
 }
 
 // Function to search flights
-async function searchFlights(from, to, departureDate, flightNumber) {
-    let query = {};
-    if (from) query.from = from;
-    if (to) query.to = to;
-    if (departureDate) query.departureTime = { $gte: new Date(departureDate + "T00:00:00Z"), $lt: new Date(departureDate + "T23:59:59Z") };
-    if (flightNumber) query.flightNumber = flightNumber;
-
+async function searchFlights(query) {
     try {
         const flights = await Flight.find(query);
         return { status: 'success', flights };
@@ -68,10 +62,9 @@ async function searchFlights(from, to, departureDate, flightNumber) {
     }
 }
 
-// Export functions to be used in webhook.js
 module.exports = {
-    router, // This is for use as middleware in index.js
-    bookFlight, // These function exports are for use in webhook.js
+    router,
+    bookFlight,
     cancelFlight,
     searchFlights
 };
