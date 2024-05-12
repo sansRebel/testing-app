@@ -13,11 +13,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Decode Google credentials from environment variable
-//const googleCredentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, 'base64').toString('utf8'));
+const googleCredentials = JSON.parse(Buffer.from(process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64, 'base64').toString('utf8'));
 
-/*const sessionClient = new dialogflow.SessionsClient({
+const sessionClient = new dialogflow.SessionsClient({
   credentials: googleCredentials
-});*/
+});
 
 app.use(cors({
     origin: 'https://testing-app-client.vercel.app',  // This should match the client's URL exactly as seen in the browser
